@@ -1,0 +1,9 @@
+FROM maweimarvin/modifedsrciror
+RUN rm -rf mutator.cpp  && rm run.sh -rf
+COPY src ./src
+COPY scripts ./scripts
+ENV SRCIROR_SRC_MUTATOR=/srciror/build/mutator
+ENV PATH=$PATH:/srciror/scripts/run.sh
+RUN make
+
+RUN pip3 install --upgrade pip && pip3 install unidiff && pip install unidiff

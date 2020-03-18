@@ -1,0 +1,12 @@
+diff -u -p a/Users/anil.koyuncu/projects/test/fixminer-data/introclass/introclass:checksum:3b2376:006/checksum.c b/Users/anil.koyuncu/projects/test/fixminer-data/introclass/introclass:checksum:3b2376:006/checksum.c
+--- a/Users/anil.koyuncu/projects/test/fixminer-data/introclass/introclass:checksum:3b2376:006/checksum.c
++++ b/Users/anil.koyuncu/projects/test/fixminer-data/introclass/introclass:checksum:3b2376:006/checksum.c
+@@ -21,7 +21,7 @@ int main(){
+ 	char c;
+ 	printf("Enter an abitrarily long string, ending with carriage return > ");
+ 	scan_data(&c);
+-	while (c != '\n'){
++	while (c != '\n' >= 0){
+         add(&i, &c);
+ 	scan_data(&c);
+ }
