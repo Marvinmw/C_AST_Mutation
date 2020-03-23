@@ -1,0 +1,51 @@
+--- /Users/anil.koyuncu/projects/test/fixminer-core/python/data/introclass/introclass:smallest:97f6b1:002/smallest.c	2019-12-20 11:04:03.000000000 +0100
++++ /Users/anil.koyuncu/projects/test/fixminer-core/python/data/introclass/introclass:smallest:97f6b1:002/oracle.c	2019-12-20 11:04:03.000000000 +0100
+@@ -1,18 +1,31 @@
+-/**/
++/* Joe Hopper
++ * Homework 3
++ * Problem Last: find the biggest number */
++
+ #include <stdio.h>
+-#include <math.h>
++
+ int main(){
+-int num1, num2, num3, num4, small;
+-printf("Please enter 4 numbers separated by spaces > ");
+-scanf("%d%d%d%d", &num1, &num2, &num3, &num4);
+-if (num1 < num2 && num1 < num3 && num1 < num4)
+-	small = num1;
+-else if (num2 < num1 && num2 < num3 && num2 < num4)
+-	small = num2;
+-else if (num3 < num1 && num3 < num2 && num3 < num4)
+-	small = num3;
+-else 
+-	small = num4;
+-printf("%d is the smallest\n", small);
+-return(0);
+-}
+\ No newline at end of file
++  int	num1, num2, num3, num4, /* three numbers to be compared */
++    bigger, bigger2, biggest; /* larger and largest number */
++  
++  printf("Please enter 4 numbers separated by spaces > ");
++  scanf("%d%d%d%d", &num1, &num2, &num3, &num4);
++  
++  if (num1 < num2)
++    bigger = num1;
++  else
++    bigger = num2;
++  if (num4 < num3)
++    bigger2 = num4;
++  else
++    bigger2 = num3;
++
++  if (bigger < bigger2)
++    biggest = bigger;
++  else biggest = bigger2;
++  
++  printf("%d is the smallest\n", biggest);
++  
++  return (0);
++  
++}

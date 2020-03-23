@@ -1,5 +1,8 @@
 build
 cmake-build-debug
+introclass3/**/mutation_patched
+introclass3/**/mutation_patches
 test
+.idea
 *.o
 *.so

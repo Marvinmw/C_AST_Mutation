@@ -1,0 +1,12 @@
+diff -u -p a/Users/anil.koyuncu/projects/test/fixminer-data/introclass/introclass:smallest:97f6b1:002/smallest.c b/Users/anil.koyuncu/projects/test/fixminer-data/introclass/introclass:smallest:97f6b1:002/smallest.c
+--- smallest_tmp.c
++++ smallest_tmp.c
+@@ -13,6 +13,6 @@ else if (num3 < num1 && num3 < num2 && n
+ 	small = num3;
+ else 
+ 	small = num4;
+-printf("%d is the smallest\n", small);
++printf("%d is the smallest\n", small + 1);
+ return(0);
+ }
+\ No newline at end of file

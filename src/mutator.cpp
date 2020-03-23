@@ -251,7 +251,7 @@ std::vector<std::vector<unsigned long >> comb(unsigned long N, unsigned long K)
 typedef std::vector<std::pair<unsigned int, Replacement>> CandidatorList;
 
 void HigherOrderMutate(CandidatorList clist, int order, std::string tool, std::string ext, std::string srcDir,
-                       SourceManager& SourceMgr, CompilerInstance& TheCompInst, FileManager& FileMgr, std::string outputfolder){
+                       SourceManager& SourceMgr, CompilerInstance& TheCompInst, FileManager& FileMgr, std::string outputfolder ,std::string prefix){
     unsigned  long total = clist.size();
     std::vector<std::vector<unsigned long >> combinations = comb(total, order);
     unsigned long counter = 0;
@@ -286,7 +286,7 @@ void HigherOrderMutate(CandidatorList clist, int order, std::string tool, std::s
 }
 
 void Mutate(Replacements& repl, std::string NamePrefix, std::string NameSuffix, std::string tool, std::string ext, std::string srcDir,
-        SourceManager& SourceMgr, CompilerInstance& TheCompInst, FileManager& FileMgr, std::string outputfolder){
+        SourceManager& SourceMgr, CompilerInstance& TheCompInst, FileManager& FileMgr, std::string outputfolder, std::string prefix){
     int x = 0;
     for (auto &r : repl) {
         x++;
@@ -308,7 +308,7 @@ void Mutate(Replacements& repl, std::string NamePrefix, std::string NameSuffix, 
                 const RewriteBuffer *RewriteBuf = TheRewriter.getRewriteBufferFor(SourceMgr.getMainFileID());
                 std::ofstream out_file;
                 //std::string outFileName = srcDir + "/mutated_patches/" + tool + ".mut." + NamePrefix + std::to_string(x) + "." + std::to_string(r.getOffset()) + "." + NameSuffix + ext;
-                std::string outFileName = outputfolder+"/" + tool + ".mut." + NamePrefix + std::to_string(x) + "." + std::to_string(r.getOffset()) + "." + NameSuffix + ext;
+                std::string outFileName = outputfolder+"/" + tool +"_" +prefix+ ".mut." + NamePrefix + std::to_string(x) + "." + std::to_string(r.getOffset()) + "." + NameSuffix + ext;
 //                if (access(outFileName.c_str(), F_OK) == -1) {
                     out_file.open(outFileName);
                     out_file << std::string(RewriteBuf->begin(), RewriteBuf->end());
@@ -349,13 +349,14 @@ std::set<int> parseCoverageLines(std::string ListOfLines) {
 
 
 int mutattion(int argc, const char **argv ){
-    std::string outputfolder =argv[1];
-    std::string FileName = argv[2];   // Assumes only one source file on command line to mutate
-    int my_argc = argc - 1;
+    std::string outputfolder = argv[1];
+    std::string prefix = argv[2];
+    std::string FileName = argv[3];   // Assumes only one source file on command line to mutate
+    int my_argc = argc - 2;
     const char *my_argv[my_argc];
     for(int i=0; i< my_argc; ++i) {
         if(i>=1){
-            my_argv[i] = argv[i+1];
+            my_argv[i] = argv[i+2];
         }else{
             my_argv[i] = argv[i];
         }
@@ -485,7 +486,7 @@ int mutattion(int argc, const char **argv ){
         failed = 1;
     }
     else {
-        Mutate(AORTool.getReplacements(), "binaryop_for_", "60", CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr, outputfolder);
+        Mutate(AORTool.getReplacements(), "binaryop_for_", "60", CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr, outputfolder, prefix);
         for(auto &rep:AORTool.getReplacements()){
             std::string pName = rep.getFilePath().str();
             std::string fName = CurrTool + Ext;
@@ -501,7 +502,7 @@ int mutattion(int argc, const char **argv ){
         failed = 1;
     }
     else {
-        Mutate(RORTool.getReplacements(), "binaryop_for_", "61", CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr,outputfolder);
+        Mutate(RORTool.getReplacements(), "binaryop_for_", "61", CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr,outputfolder,prefix);
         for(auto &rep:RORTool.getReplacements()){
             std::string pName = rep.getFilePath().str();
             std::string fName = CurrTool + Ext;
@@ -517,7 +518,7 @@ int mutattion(int argc, const char **argv ){
         failed = 1;
     }
     else {
-        Mutate(ICRTool.getReplacements(), "const_for_", "const", CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr, outputfolder);
+        Mutate(ICRTool.getReplacements(), "const_for_", "const", CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr, outputfolder, prefix);
         for(auto &rep:ICRTool.getReplacements()){
             std::string pName = rep.getFilePath().str();
             std::string fName = CurrTool + Ext;
@@ -533,7 +534,7 @@ int mutattion(int argc, const char **argv ){
         failed = 1;
     }
     else {
-        Mutate(LCRTool.getReplacements(), "binaryop_for_", "62", CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr, outputfolder);
+        Mutate(LCRTool.getReplacements(), "binaryop_for_", "62", CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr, outputfolder, prefix);
         for(auto &rep:LCRTool.getReplacements()){
             std::string pName = rep.getFilePath().str();
             std::string fName = CurrTool + Ext;
@@ -549,7 +550,7 @@ int mutattion(int argc, const char **argv ){
         failed = 1;
     }
     else {
-        Mutate(OCNGTool.getReplacements(), "binaryop_for_", "ocng", CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr, outputfolder);
+        Mutate(OCNGTool.getReplacements(), "binaryop_for_", "ocng", CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr, outputfolder, prefix);
         for(auto &rep:OCNGTool.getReplacements()){
             std::string pName = rep.getFilePath().str();
             std::string fName = CurrTool + Ext;
@@ -562,16 +563,16 @@ int mutattion(int argc, const char **argv ){
     }
 
     std::cout << "High Order = 2" << std::endl;
-    HigherOrderMutate(replist, 2, CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr,outputfolder);
+    HigherOrderMutate(replist, 2, CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr,outputfolder, prefix);
     std::cout << "High Order = 3" << std::endl;
-    HigherOrderMutate(replist, 3, CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr,outputfolder);
-    std::cout << "High Order = 4" << std::endl;
-    HigherOrderMutate(replist, 4, CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr,outputfolder);
+    HigherOrderMutate(replist, 3, CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr,outputfolder, prefix);
+//    std::cout << "High Order = 4" << std::endl;
+//HigherOrderMutate(replist, 4, CurrTool, Ext, SrcDir, SourceMgr, TheCompInst, FileMgr,outputfolder, prefix);
     return failed;
 }
 
 int main(int argc, const char **argv) {
-    std::string FileName = argv[1];   // Assumes only one source file on command line to mutate
+    //std::string FileName = argv[1];   // Assumes only one source file on command line to mutate
     int failed = mutattion(argc, argv);
     return failed;
 }

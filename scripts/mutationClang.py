@@ -54,7 +54,7 @@ def getChangedLines(patchfile, source_name):
 
     return changed_lines
 
-def mutate(compiler, ext, mutator, args, compiler_include_flags, src_indices, outputfolder):
+def mutate(compiler, ext, mutator, args, compiler_include_flags, src_indices, outputfolder, prefix="mutant"):
     new_args = copy.deepcopy(args)
     for index in src_indices:
         src_file = args[index]
@@ -63,7 +63,7 @@ def mutate(compiler, ext, mutator, args, compiler_include_flags, src_indices, ou
         if not cov_info:
             print("no coverage info for the file: " + src_file + ", so assume wants to mutate all")
             cov_info = "all"
-        command = mutator + " " + outputfolder + " "+ src_file + " -coverage_info=" +  cov_info + " -- " + " ".join(args) + ' -I'  + compiler_include_flags.strip()
+        command = mutator + " " + outputfolder + " "+prefix+" "+ src_file + " -coverage_info=" +  cov_info + " -- " + " ".join(args) + ' -I'  + compiler_include_flags.strip()
         print("THE ACTUAL COMMAND IS: " + command)
         out, err, my_time = executeCommand(command.split(), True)
 
@@ -113,6 +113,7 @@ def main():
     srcdir = os.path.dirname(sourcefile)
     shutil.rmtree(os.path.join(srcdir, outputfolder), ignore_errors=True)
     os.makedirs(os.path.join(srcdir, outputfolder), exist_ok=True)
+
     # changedlines = getChangedLines(patchfile, sourcecode) if os.path.isfile(patchfile) else []
     # if len(changedlines) !=0 :
     #     write_code_area(changedlines, sourcefile)
