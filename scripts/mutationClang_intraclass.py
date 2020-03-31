@@ -129,7 +129,7 @@ def main():
     mutator = os.environ["SRCIROR_SRC_MUTATOR"] # path to build/mutator
     work_dir = sys.argv[1]
     program_name = sys.argv[2]
-    args = sys.argv[3:]
+    args_org = sys.argv[3:]
     source_srclist = read_source_folder(work_dir)
 
     for srcfolder in source_srclist:
@@ -137,7 +137,7 @@ def main():
         outputpatchesfolder = os.path.join(srcfolder, "mutation_patches")
         # print("patchfile  {}".format(patchfile))
         sourcefile = os.path.join(srcfolder, program_name+".c")
-        args = [os.path.join(srcfolder, program_name+"_tmp.c")] + args
+        args = [os.path.join(srcfolder, program_name+"_tmp.c")] + args_org
 
         shutil.rmtree( outputfolder, ignore_errors=True)
         os.makedirs(outputfolder, exist_ok=True)
