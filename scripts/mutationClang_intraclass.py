@@ -103,7 +103,8 @@ def write_code_area(changedlines, codefile):
 def read_source_folder(workdir):
     source_srclist = []
     for f in  os.listdir(workdir):
-        source_srclist.append(os.path.join(workdir, f))
+        if "introclass" in f:
+           source_srclist.append(os.path.join(workdir, f))
     return source_srclist
 
 
@@ -137,8 +138,9 @@ def main():
         outputpatchesfolder = os.path.join(srcfolder, "mutation_patches")
         # print("patchfile  {}".format(patchfile))
         sourcefile = os.path.join(srcfolder, program_name+".c")
-        if not os.path.isfile(sourcefile):
+        if not os.path.isfile(sourcefile) or not os.path.isdir(srcfolder):
             continue
+
         args = [os.path.join(srcfolder, program_name+"_tmp.c")] + args_org
 
         shutil.rmtree( outputfolder, ignore_errors=True)
