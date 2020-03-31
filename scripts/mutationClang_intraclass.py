@@ -137,6 +137,8 @@ def main():
         outputpatchesfolder = os.path.join(srcfolder, "mutation_patches")
         # print("patchfile  {}".format(patchfile))
         sourcefile = os.path.join(srcfolder, program_name+".c")
+        if not os.path.isfile(sourcefile):
+            continue
         args = [os.path.join(srcfolder, program_name+"_tmp.c")] + args_org
 
         shutil.rmtree( outputfolder, ignore_errors=True)
